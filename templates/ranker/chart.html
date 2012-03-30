@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block includes %}
+<script type="text/javascript" src="https://raw.github.com/mbostock/d3/master/d3.v2.min.js"></script>
+<script type="text/javascript">
+    DATA = [
+        {% for item, rankx, ranky in plot_items %}
+            {slug: "{{ item.slug }}", title: "{{ item.title|escape|escapejs }}", rankx: {{ rankx.value }}, ranky: {{ ranky.value }} },
+        {% endfor %}
+    ];
+
+    XLABEL = "{{ axis_x.title|escape|escapejs }}";
+    YLABEL = "{{ axis_y.title|escape|escapejs }}";
+
+    XRANGE = [{{ axis_x.get_min_value }}, {{ axis_x.get_max_value }}];
+    YRANGE = [{{ axis_y.get_min_value }}, {{ axis_y.get_max_value }}];
+
+    $(document).ready(function(){
+        var svg = d3.select("div.chart")
+                    //.data(DATA)
+                    .append("svg")
+                    .attr("width", 660)
+                    .attr("height", 660)
+                    .append("g")
+                    .attr("transform", "translate(30, 30)");
+        
+        var xscale = d3.scale.linear().domain(XRANGE).range([0, 600]);
+        var yscale = d3.scale.linear().domain(YRANGE).range([600, 0]);
+
+        /*
+        var rules = vis.selectAll("g.rule")
+                       .data(x.ticks(10))
+                       .enter()
+                       .append("svg:g")
+                       .attr("class", "rule");
+        */
+
+        svg.append("line")
+           .attr("x1", 0)
+           .attr("x2", 600)
+           .attr("y1", yscale(0))
+           .attr("y2", yscale(0))
+           .attr("stroke", "#000")
+
+        svg.append("line")
+           .attr("x1", xscale(0))
+           .attr("x2", xscale(0))
+           .attr("y1", 0)
+           .attr("y2", 600)
+           .attr("stroke", "#000")
+
+        svg.append("text")
+           .attr("x", 300)
+           .attr("y", 620)
+           .attr("text-anchor", "middle")
+           .attr("font-size", "1.5em")
+           .text(XLABEL);
+
+        svg.append("text")
+           .attr("x", -10)
+           .attr("y", 300)
+           .attr("text-anchor", "middle")
+           .attr("transform", "rotate(-90, -10, 300)")
+           .attr("font-size", "1.5em")
+           .text(YLABEL);
+
+        
+        dgl = svg.append("g");
+
+
+        dgl.selectAll("circle")
+           .data(DATA)
+           .enter()
+           .append("circle")
+           .attr("cx", function(d){ return xscale(d.rankx); })
+           .attr("cy", function(d){ return yscale(d.ranky); })
+           .attr("r", 5)
+           .attr("opacity", 0.3)
+           .attr("fill", "#1234AA");
+
+        dgl.selectAll("text")
+           .data(DATA)
+           .enter()
+           .append("text")
+           .attr("x", function(d){ return xscale(d.rankx); })
+           .attr("y", function(d){ return yscale(d.ranky) - 12; })
+           .attr("text-anchor", "middle")
+           .attr("dy", "0.3em")
+           .attr("clip", "inherit")
+           .text(function(d){ return d.title; });
+
+    });
+</script>
+{% endblock %}
+
+{% block container %}
+<h1>
+    <a href="{% url axis axis_slug=axis_x.slug %}">{{ axis_x.title }}</a>
+    vs. 
+    <a href="{% url axis axis_slug=axis_y.slug %}">{{ axis_y.title }}</a>
+</h1>
+<div class="swaplabel">
+    <a href="{% url chart axis_x_slug=axis_y.slug axis_y_slug=axis_x.slug %}">Swap Axes</a>
+</div>
+<div class="chart">
+
+</div>
+
+<div class="items">
+    <h2>Items</h2>
+
+    <ul>
+    {% for item, rankx, ranky in plot_items %}
+        <li>
+            <a href="{% url item item_slug=item.slug %}">{{ item.title }}</a> 
+            ({{ rankx.value }}, {{ ranky.value }})
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}

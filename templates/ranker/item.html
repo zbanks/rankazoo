@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block includes %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
+
+{% block container %}
+<div class="item">
+    <h2>Item: {{ item.title }}</h2> 
+</div>
+
+<div class="form">
+    <form method="POST" action="{% url item item_slug=item.slug %}">
+        {{ item_form.as_p }}
+        <p>
+            <input type="submit" value="Save"></input>
+        </p>
+    </form>
+</div>
+
+<div class="Axes">
+    <h2>Axes</h2>
+
+    <ul>
+    {% for axis, rank in ranked_axes %}
+        <li>
+            <a href="{% url axis axis_slug=axis.slug %}">{{ axis.title }}</a>: 
+            <span class="rankvalue" name="{{ axis.slug }}_{{ item.slug}}_value">{{ rank.value|default:"unranked" }}</span> 
+            <div class="slider" name="{{ axis.slug }}_{{ item.slug }}" saveurl="{% url rank axis_slug=axis.slug item_slug=item.slug %}" rankvalue="{{ rank.value|default:0 }}" minvalue="{{ axis.get_min_value }}" maxvalue="{{ axis.get_max_value }}"></div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+
+{% endblock %}
+

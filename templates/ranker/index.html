@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block includes %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
+
+{% block container %}
+<div class="axes">
+    <h2>Axes</h2>
+
+    <ul>
+    {% for axis in axes %}
+        <li><a href="{% url axis axis_slug=axis.slug %}">{{ axis.title }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="items">
+    <h2>Items</h2>
+
+    <ul>
+    {% for item in items %}
+        <li><a href="{% url item item_slug=item.slug %}">{{ item.title }}</a></li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="new_forms">
+    <div class="form" style="float: left;">
+        <h3>Add a new Axis</h3>
+        <form method="POST" action="{% url axis %}">
+            {{ new_axis_form.as_p }}
+            <p>
+                <input type="submit" value="Save"></input>
+            </p>
+        </form>
+    </div>
+
+    <div class="form" style="float: right;">
+        <h3>Add a new Item</h3>
+        <form method="POST" action="{% url item %}">
+            {{ new_item_form.as_p }}
+            <p>
+                <input type="submit" value="Save"></input>
+            </p>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

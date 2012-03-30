@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block includes %}
+<script type="text/javascript">
+
+</script>
+{% endblock %}
+
+{% block container %}
+<div class="axis">
+    <h2>Axis: {{ axis.title }}</h2>
+    <div class="form">
+        <form method="POST" action="{% url axis axis_slug=axis.slug %}">
+            {{ axis_form.as_p }}
+            <p>
+                <input type="submit" value="Save"></input>
+            </p>
+        </form>
+    </div>
+</div>
+
+<div class="items">
+    <h2>Items</h2>
+
+    <ul>
+    {% for item, rank in ranked_items %}
+        <li>
+            <a href="{% url item item_slug=item.slug %}">{{ item.title }}</a>: 
+            <span class="rankvalue" name="{{ axis.slug }}_{{ item.slug}}_value">{{ rank.value|default:"unranked" }}</span> 
+            <div class="slider" name="{{ axis.slug }}_{{ item.slug }}" saveurl="{% url rank axis_slug=axis.slug item_slug=item.slug %}" rankvalue="{{ rank.value|default:0 }}" minvalue="{{ axis.get_min_value }}" maxvalue="{{ axis.get_max_value }}"></div>
+        </li>
+    {% endfor %}
+    </ul>
+</div>
+
+<div class="axes">
+    <h2>Plot {{ axis.title }} against other axes</h2>
+    <ul>
+    {% for caxis in all_axes %}
+        {% if caxis != axis %}
+        <li>
+            <a href="{% url chart axis_x_slug=axis.slug axis_y_slug=caxis.slug %}">{{ axis.title }} vs. {{ caxis.title }}</a>
+        </li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+</div>
+{% endblock %}
+
