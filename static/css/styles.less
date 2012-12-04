@@ -1,0 +1,222 @@
+// Universal
+
+@dark: black;
+@light: white;
+@select-bg: red;
+@select-fg: white;
+
+@font-serif: "Georgia, serif";
+@font-sans: "Helvetica Neue","Helvetica",Arial,sans;
+
+@font-face {
+    src: url("images/fontawesome-webfont.ttf");
+    font-family: "FontAwesome-Glyphs"
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+    -webkit-margin-start: 0;
+    -webkit-margin-end: 0;
+}
+
+ul {
+    list-style: none;
+}
+
+html {
+    font-family: @font-sans;
+    white-space: nowrap;
+    background-color:@light;
+    color:@dark;
+}
+div {
+    white-space: normal;
+}
+
+h1 {font-size: 36px;}
+h2 {font-size: 21px;font-weight: 400;}
+
+input {
+
+}
+
+// Grids
+
+.grid {
+    letter-spacing: -0.31em;
+    word-spacing: -0.43em;
+}
+
+.g1,.g2,.g3,.g4,.g5,.g6,
+.g7,.g8,.g9,.g10,.g11,.g12,
+.g1-12,.g2-12,.g3-12,.g4-12,.g5-12,.g6-12,
+.g7-12,.g8-12,.g9-12,.g10-12,.g11-12,.g12-12 {
+    display: inline-block;
+    zoom: 1;
+    letter-spacing: normal;
+    word-spacing: normal;
+    vertical-align: top;
+}
+
+.g1 {width: 100px;}
+.g2 {width: 200px;}
+.g3 {width: 300px;}
+.g4 {width: 400px;}
+.g5 {width: 500px;}
+.g6 {width: 600px;}
+.g7 {width: 700px;}
+.g8 {width: 800px;}
+.g9 {width: 900px;}
+.g10 {width: 1000px;}
+.g11 {width: 1100px;}
+.g12 {width: 1200px;}
+
+@one-twelfth: 8.333%;
+.g1-12  {width: @one-twelfth*1%;}
+.g2-12  {width: @one-twelfth*2%;}
+.g3-12  {width: 25%;}
+.g4-12  {width: @one-twelfth*4%;}
+.g5-12  {width: @one-twelfth*5%;}
+.g6-12  {width: 50%;}
+.g7-12  {width: @one-twelfth*7%;}
+.g8-12  {width: @one-twelfth*8%;}
+.g9-12  {width: 75%;}
+.g10-12 {width: @one-twelfth*10%;}
+.g11-12 {width: @one-twelfth*11%;}
+.g12-12 {width: 100%;}
+
+// Main
+@titleheight: 100px;
+@lrpadding: 20px;
+
+
+.col {
+    border-right: 1px solid @dark;
+    height: 100%;
+}
+
+.title {
+    height: @titleheight;
+    padding: 0 @lrpadding;
+    border-bottom: 2px solid @dark;
+    position: relative;
+
+    .title-txt {
+        position: absolute;
+        bottom: 10px;
+    }
+}
+
+.menubar {
+    .container {
+        margin-top: 42px;
+    }
+}
+
+.menu-btn {
+    font-family: "FontAwesome-Glyphs";
+    display: block;
+    width:100%;
+    text-align: center;
+    font-size: 20px;
+    padding: 23px 0 17px;
+    margin: 0;
+
+    text-decoration: none;
+    color: @dark;
+
+    &:hover {
+        background-position: 50% 40%;
+        color: @select-fg;
+        background-color: @select-bg;
+    }
+}
+
+.content {
+    display: inline-block;
+    width: 100%;
+    margin-left: -4px;
+}
+
+.game-active {
+    padding: 10px @lrpadding;
+    border-bottom: 1px dotted @dark;
+    cursor: pointer;
+
+    &:hover {
+        background-color: @select-bg;
+        color: @select-fg;
+    }
+
+    .adjs {
+        font-family: @font-serif;
+        font-style: oblique;
+        font-size: 10px;
+        line-height: 14px;
+
+        li {
+            display: inline;
+            &::after {
+                content:",";
+            }
+            &:last-child::after {
+                content:"";
+            }
+        }
+    }
+}
+
+.input {
+    padding: 8px 0 30px;
+
+    label {
+        font-size: 12px;
+        font-weight: 500;
+        display: block;
+        margin-bottom: 5px;
+        padding: 0 @lrpadding;
+    }
+
+    input {
+        width: 100%;
+        padding: 8px @lrpadding 7px;
+        box-shadow: none;
+        border: none;
+        border-top: 2px solid @dark;
+        border-bottom: 1px solid @dark;
+        outline: none;
+        font-family: @font-serif;
+        font-style: oblique;
+        font-size: 12px;
+
+        &:focus {
+            color: @select-bg;
+        }
+    }
+
+    ul {
+        border-top: 2px solid @dark;
+        border-bottom: 1px solid @dark;
+
+        li {
+            font-family: @font-serif;
+            font-style: oblique;
+            font-size: 12px;
+
+            input {
+                padding: 0;
+                border: none;
+            }
+
+            border-bottom: 1px dotted @dark;
+            padding: 8px @lrpadding 7px;
+
+            &:last-child {
+                border-bottom: none;
+            }
+        }
+    }
+}

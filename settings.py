@@ -106,6 +106,8 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     DEBUG_ROOT_PATH + "templates",
+    "/home/zbanks/rankazoo/templates",
+    "/Users/vinitlee/code/rankazoo/templates",
 )
 
 INSTALLED_APPS = (
