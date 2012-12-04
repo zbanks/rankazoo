@@ -108,6 +108,7 @@ TEMPLATE_DIRS = (
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
     "/home/zbanks/rankazoo/templates",
+    "/Users/vinitlee/code/rankazoo/templates",
 )
 
 INSTALLED_APPS = (
