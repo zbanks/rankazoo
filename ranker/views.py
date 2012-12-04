@@ -13,9 +13,15 @@ class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
 
-class RankForm(forms.Form):
+class RankingForm(forms.Form):
     pass    
 
+def index(request):
+    games = Game.objects.all()[:5]
+    return render_to_response("base_new.html", 
+                             {"games": games
+                             })
+'''
 def index(request):
     axes = Axis.objects.all()
     items = Item.objects.all()
@@ -24,10 +30,11 @@ def index(request):
     return render_to_response("ranker/index.html", 
                              {"axes" : axes,
                               "items" : items,
+                              "games" : games,
                               "new_axis_form" : new_axis_form,
                               "new_item_form" : new_item_form
                              })
-
+'''
 
 
 def axis(request, axis_slug=""):
@@ -52,7 +59,7 @@ def axis(request, axis_slug=""):
     ranked_items = []
     for item in items:
         try:
-            rank = Rank.objects.get(item=item, axis=axis)
+            rank = Ranking.objects.get(item=item, axis=axis)
             ranked_items.append((item, rank))
         except:
             ranked_items.append((item, None))
@@ -98,7 +105,7 @@ def item(request, item_slug=""):
     ranked_axes = []
     for axis in axes:
         try:
-            rank = Rank.objects.get(axis=axis, item=item)
+            rank = Ranking.objects.get(axis=axis, item=item)
             ranked_axes.append((axis, rank))
         except:
             ranked_axes.append((axis, None))
@@ -125,7 +132,7 @@ def rank(request, axis_slug="", item_slug=""):
     except:
         return page_not_found(request)
 
-    rank = Rank.objects.get_or_create(item=item, axis=axis)[0]
+    rank = Ranking.objects.get_or_create(item=item, axis=axis)[0]
     if "value" in request.POST:
         try:
             value = float(request.POST["value"])

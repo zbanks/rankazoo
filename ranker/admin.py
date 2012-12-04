@@ -7,9 +7,9 @@ class AxisAdmin(ModelAdmin):
 class ItemAdmin(ModelAdmin):
     pass
 
-class RankAdmin(ModelAdmin):
+class RankingAdmin(ModelAdmin):
     pass
 
 site.register(Axis, AxisAdmin)
 site.register(Item, ItemAdmin)
-site.register(Rank, RankAdmin)
+site.register(Ranking, RankingAdmin)
