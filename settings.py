@@ -1,11 +1,11 @@
 # Django settings for rankazoo project.
+from local_settings import *
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 ADMINS = (
     ("Zach Banks", "zbanks@mit.edu"),
-    # ('Your Name', 'your_email@example.com'),
 )
 
 MANAGERS = ADMINS
@@ -73,6 +73,7 @@ STATICFILES_DIRS = (
     # Put strings here, like "/home/html/static" or "C:/www/django/static".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
+    DEBUG_ROOT_PATH + "static"
 )
 
 # List of finder classes that know how to find static files in
@@ -80,11 +81,8 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#    'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
-
-# Make this unique, and don't share it with anybody.
-SECRET_KEY = '81=x^qmwrr+8+j9t9a+9^hzi&)3f1m(g3@cy8$2h^fo-q5rfuk'
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -96,7 +94,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-#'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
 )
@@ -107,7 +105,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    "/home/zbanks/rankazoo/templates",
+    DEBUG_ROOT_PATH + "templates",
 )
 
 INSTALLED_APPS = (
@@ -117,7 +115,6 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
