@@ -1,9 +1,9 @@
 <html>
     <head>
         <title>The Axis Game</title>
-        <link rel="stylesheet" type="text/css" href="styles.css">
-        <link rel="stylesheet" href="font-awesome.css">
-        <link rel="stylesheet" href="font-awesome-ie7.css">
+        <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+        <link rel="stylesheet" href="/static/css/font-awesome.css">
+        <link rel="stylesheet" href="/static/css/font-awesome-ie7.css">
     </head>
     <body class="grid g12-12">
         <div class="menubar col g1">
@@ -25,6 +25,17 @@
                     <h1 class="title-txt">The Axis Game</h1>
                 </div>
                 <div class="container">
+                    {% for game in games %}
+                    <div class="game-active">
+                        <h2>{{ game.title }} - {{ game.plotter }}</h2>
+                        <ul class="adjs">
+                            {% for ax in game.gameaxis_set.all %}
+                                <li>{{ ax.axis.title }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    {% endfor %}
+                    <!--
                     <div class="game-active">
                         <h2>Stormageddon Banks</h2>
                         <ul class="adjs">
@@ -65,6 +76,7 @@
                             <li>Adjective</li>
                         </ul>
                     </div>
+                    -->
                 </div>
             </div>
             <div class="col g3-12">

@@ -43,7 +43,7 @@ class Axis(models.Model):
     slug = AutoSlugField(unique=True, populate_from="title", max_length=30)
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    scale = models.CharField(max_length=16, choices=AXIS_SCALES_NAMES, default="POSLINEAR")
+    scale = models.CharField(max_length=16, choices=AXIS_SCALES_NAMES, default="LINEAR")
 
     def __unicode__(self):
         return self.title
@@ -85,14 +85,14 @@ class Ranking(models.Model):
 class Game(models.Model):
     slug = AutoSlugField(unique=True, populate_from="title", max_length=30)
     title = models.CharField(max_length=80, blank=True)
-    plotter = models.ForeignKey(User, blank=True)
-    followers = models.ManyToManyField(User, related_name="following_games")
+    plotter = models.ForeignKey(User, blank=True, null=True)
+    followers = models.ManyToManyField(User, related_name="following_games", blank=True)
     active = models.BooleanField(default=True)
     start_time = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return u"Game by %u %u" % (self.plotter, u"(inactive)" if not self.active else u"")
+        return u"Game by %s %s" % (self.plotter, u"(inactive)" if not self.active else u"")
 
     def touch(self):
         self.last_modified = datetime.datetime.now()
@@ -115,7 +115,7 @@ class QueueItem(models.Model):
         return self.queueitemvote_set.aggregate(Sum('value'))["value__sum"]
 
     def __unicode__(self):
-        return u"(%+d) %u" % (self.value, self.item)
+        return u"(%+d) %s" % (self.value, self.item)
 
     class Meta:
         ordering = ["-time"]
@@ -132,10 +132,11 @@ class Guess(models.Model):
     time = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):
-        return u"Guess by %u on [%u]" % (self.user, self.game)
+        return u"Guess by %s on [%s]" % (self.user, self.game)
 
     class Meta:
         ordering = ["-time"]
+        verbose_name_plural = "Guesses"
 
 
 class AxisInstance(models.Model):
@@ -154,5 +155,13 @@ class AxisInstance(models.Model):
 class GameAxis(AxisInstance):
     game = models.ForeignKey(Game)
 
+    class Meta:
+        ordering = ["axis"]
+        verbose_name_plural = "Game axes"
+
 class GuessAxis(AxisInstance):
     guess = models.ForeignKey(Guess)
+
+    class Meta:
+        ordering = ["axis"]
+        verbose_name_plural = "Guess axes"

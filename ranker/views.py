@@ -17,7 +17,8 @@ class RankingForm(forms.Form):
     pass    
 
 def index(request):
-    games = Game.objects.all()[:5]
+    games = Game.objects.filter(plotter__isnull=False)[:5]
+    inactive_games = Game.objects.filter(plotter__isnull=True)
     return render_to_response("base_new.html", 
                              {"games": games
                              })
