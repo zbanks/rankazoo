@@ -141,6 +141,10 @@ class Game(models.Model):
                 except: pass
         return plotted_items
 
+    @property
+    def queue(self):
+        return sorted(self.queueitem_set.all(), key=lambda qi: -qi.value)
+
     class Meta:
         ordering = ["-last_modified"]
 
@@ -151,7 +155,11 @@ class QueueItem(models.Model):
 
     @property
     def value(self):
-        return self.queueitemvote_set.aggregate(Sum('value'))["value__sum"]
+        v = self.queueitemvote_set.aggregate(models.Sum('value'))["value__sum"]
+        if v:
+            return v
+        else:
+            return 0
 
     def __unicode__(self):
         return u"(%+d) %s" % (self.value, self.item)

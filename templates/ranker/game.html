@@ -141,5 +141,14 @@
     {% endfor %}     
 </div>
 -->
+<div class="input g12-12">
+    <label for="">Queue</label>
+    <ul>
+        {% for qi in game.queue %}
+            <li>({{ qi.value }}) - {{ qi.item }}</li>
+        {% endfor %}
+        <li><input type="text"></li>
+    </ul>
+</div>
 {% endblock %}
 

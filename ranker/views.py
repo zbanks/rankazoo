@@ -37,6 +37,7 @@ def game(request, game_slug=""):
                               "x_axis": x_axis,
                               "y_axis": y_axis
                              })
+
 '''
 def index(request):
     axes = Axis.objects.all()
