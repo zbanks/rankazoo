@@ -4,6 +4,7 @@ urlpatterns = patterns('',
     # Examples:
     # url(r'^$', 'rankazoo.views.home', name='home'),
     url(r'^$', 'rankazoo.ranker.views.index', name='index'),
+    url(r'^data.json$', 'rankazoo.ranker.views.json_data', name='json_data'),
 #url(r'^addaxis$', 'rankazoo.ranker.views.addaxis', name='addaxis'),
 #url(r'^axis(?:/(?P<axis_slug>[\w-]+))?$', 'rankazoo.ranker.views.axis', name='axis'),
     url(r'^game(?:/(?P<game_slug>[\w-]+))?$', 'rankazoo.ranker.views.game', name='game'),
