@@ -113,22 +113,27 @@
 </div>
 {% endblock %}
 
+{% block actions_title %}
+Adjectives
+{% endblock %}
+
 {% block actions %}
-<div class="input g12-12">
-    <label for="">Enter a thing</label>
-    <input type="text">
-</div>
-<div class="input g12-12">
-    <label for="">Enter a few things</label>
+<div class="action">
+    <label for="">Possible Adjectives</label>
     <ul>
         <li>Things</li>
-        <li><input type="text"></li>
-        <li><input type="text"></li>
-        <li><input type="text"></li>
+        <li>Things2</li>
+    </ul>
+</div>
+<div class="action">
+    <label for="">Make a guess</label>
+    <ul>
+        <li><input type="text" value="x = "></li>
+        <li><input type="text" value="y = "></li>
     </ul>
 </div>
 <!--
-<div class="input g12-12">
+<div class="action">
     <h3>Suggested games</h3>
     {% for game in inactive_games %}
     <div class="game-inactive">
