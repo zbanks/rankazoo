@@ -8,7 +8,7 @@
 
 {% block content %}
 {% for game in games %}
-<a href="{% url game game_slug=game.slug %}">
+<a href="{% url 'game' game_slug=game.slug %}">
     <div class="game-active">
         <h2>{{ game.title }} - {{ game.plotter }}</h2>
         <ul class="adjs">
