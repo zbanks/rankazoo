@@ -3,6 +3,7 @@ from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.defaults import page_not_found, server_error
 from django.http import HttpResponse
 from django.db.models import Count
+from django.template import RequestContext
 from models import *
 
 class AxisForm(forms.ModelForm):
@@ -24,7 +25,7 @@ def index(request):
                              {"games": games,
                               "inactive_games": inactive_games,
                               "user": user
-                             })
+                             },context_instance=RequestContext(request))
 
 def game(request, game_slug=""):
     user = request.user
@@ -36,7 +37,7 @@ def game(request, game_slug=""):
                               "user": user,
                               "x_axis": x_axis,
                               "y_axis": y_axis
-                             })
+                             }, context_instance=RequestContext(request))
 
 '''
 def index(request):
