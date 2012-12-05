@@ -3,3 +3,5 @@
 *.pyc
 rankazoo_db*
 local_settings.py
+
+.DS_Store
