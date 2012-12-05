@@ -147,7 +147,7 @@ Adjectives
     {% endfor %}     
 </div>
 -->
-<div class="input g12-12">
+<div class="action">
     <label for="">Queue</label>
     <ul>
         {% for qi in game.queue %}
@@ -158,12 +158,12 @@ Adjectives
 </div>
 
 {% get_comment_count for game as comment_game_count %}
-<div class="input g12-12">
+<div class="action">
     <label for="">Comments ({{ comment_game_count }})</label>
     {% render_comment_list for game %}
 </div>
 {% if user %}
-    <div class="input g12-12">
+    <div class="action">
         <label for="">Post Comment</label>
         {% get_comment_form for game as game_comment_form %}
          <form action="{% comment_form_target %}" method="post">
