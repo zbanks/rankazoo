@@ -16,10 +16,16 @@
 * {
     margin: 0;
     padding: 0;
+    outline: none;
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
     -webkit-margin-start: 0;
     -webkit-margin-end: 0;
+}
+
+a {
+    color: inherit;
+    text-decoration: inherit;
 }
 
 ul {
@@ -128,7 +134,7 @@ input {
     text-decoration: none;
     color: @dark;
 
-    &:hover {
+    &:hover, &:focus {
         background-position: 50% 40%;
         color: @select-fg;
         background-color: @select-bg;
@@ -141,15 +147,16 @@ input {
     margin-left: -4px;
 }
 
+a:hover .game-active,
+a:focus .game-active {
+    background-color: @select-bg;
+    color: @select-fg;
+}
+
 .game-active {
     padding: 10px @lrpadding;
     border-bottom: 1px dotted @dark;
     cursor: pointer;
-
-    &:hover {
-        background-color: @select-bg;
-        color: @select-fg;
-    }
 
     .adjs {
         font-family: @font-serif;
