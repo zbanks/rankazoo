@@ -18,6 +18,18 @@ class ItemForm(forms.ModelForm):
 class RankingForm(forms.Form):
     pass    
 
+class NewGameForm(forms.Form):
+    title = forms.CharField(max_length=80)
+    axes = forms.ModelMultipleChoiceField(queryset=Axis.objects.all())
+
+class ClaimGameForm(forms.Form):
+    x_axis = forms.ModelChoiceField(queryset=[], empty_label=None)
+    y_axis = forms.ModelChoiceField(queryset=[], empty_label=None)
+    def __init__(self, game, *args, **kwargs):
+        super(ClaimGameForm, self).__init__(*args, **kwargs)
+        self.x_axis.queryset = game.gameaxis_set.all()
+        self.y_axis.queryset = game.gameaxis_set.all()
+
 def index(request):
     user = request.user
     games = Game.objects.filter(plotter__isnull=False)[:5]

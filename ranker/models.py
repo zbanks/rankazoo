@@ -87,10 +87,10 @@ class Game(models.Model):
     slug = AutoSlugField(unique=True, populate_from="title", max_length=30)
     title = models.CharField(max_length=80, blank=True)
     plotter = models.ForeignKey(User, blank=True, null=True)
-    followers = models.ManyToManyField(User, related_name="following_games", blank=True)
+    followers = models.ManyToManyField(User, related_name="following_games", blank=True, editable=False)
     active = models.BooleanField(default=True)
-    start_time = models.DateTimeField(auto_now_add=True)
-    last_modified = models.DateTimeField(auto_now_add=True)
+    start_time = models.DateTimeField(auto_now_add=True, editable=False)
+    last_modified = models.DateTimeField(auto_now_add=True, editable=False)
 
     def __unicode__(self):
         return u"Game by %s %s" % (self.plotter, u"(inactive)" if not self.active else u"")
