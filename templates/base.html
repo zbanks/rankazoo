@@ -78,6 +78,16 @@
                     </span>
                 </div>
                 <div class="container">
+               {% if messages %} <!-- Messages; clean up/move? -->
+                    <div class="action">
+                        <label for="">Messages</label>
+                        <ul>
+                        {% for message in messages %}
+                            <li{% if message.tags %} class="message {{ message.tags }}"{% endif %}>{{ message }}</li> 
+                        {% endfor %}
+                        </ul>
+                    </div>
+                {% endif %}
                     {% block actions %}
                     {% endblock %}
                 </div>

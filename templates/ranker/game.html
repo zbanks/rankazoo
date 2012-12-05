@@ -100,17 +100,39 @@
 {% endblock %}
 
 {% block content %}
-<div class="game-active">
-    <h2>{{ game.title }} - {{ game.plotter }}</h2>
-    <ul class="adjs">
-        {% for ax in game.gameaxis_set.all %}
-            <li>{{ ax.axis.title }}</li>
-        {% endfor %}
-    </ul>
-</div>
-<div class="chart">
+{% if game.plotter %}
+    <div class="game-active">
+        <h2>{{ game.title }} - {{ game.plotter }}</h2>
+        <ul class="adjs">
+            {% for ax in game.gameaxis_set.all %}
+                <li>{{ ax.axis.title }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="chart">
 
-</div>
+    </div>
+{% else %}
+   <div class="game-inactive">
+        <h2>{{ game.title }}</h2>
+        <ul class="adjs">
+            {% for ax in game.gameaxis_set.all %}
+                <li>{{ ax.axis.title }}</li>
+            {% endfor %}
+        </ul>
+        
+        <div class="">
+            <label for="">Set the Axes</label>
+            <form method="POST" action="#">
+            <ul>
+                {% csrf_token %}
+                {{ claim_game_form.as_ul }} 
+                <li><input type="submit" name="submit" value="Start Game"></li>
+            </ul>
+            </form>
+        </div>
+   </div> 
+{% endif %}
 {% endblock %}
 
 {% block actions_title %}
@@ -118,63 +140,63 @@ Adjectives
 {% endblock %}
 
 {% block actions %}
-<div class="action">
-    <label for="">Possible Adjectives</label>
-    <ul>
-        <li>Things</li>
-        <li>Things2</li>
-    </ul>
-</div>
-<div class="action">
-    <label for="">Make a guess</label>
-    <ul>
-        <li><input type="text" value="x = "></li>
-        <li><input type="text" value="y = "></li>
-    </ul>
-</div>
-<!--
-<div class="action">
-    <h3>Suggested games</h3>
-    {% for game in inactive_games %}
-    <div class="game-inactive">
-        <h2>{{ game.title }}</h2>
-        <ul class="adjs">
-            {% for ax in game.gameaxis_set.all %}
-                <li>{{ ax.axis.title }}</li>
-            {% endfor %}
+    <!-- queue -->
+    <div class="action">
+        <label for="">Queue</label>
+        <ul>
+            {% if game.plotter == user %}
+                {% for qi in game.queue %}
+                    <li><a href="#plotit_{{ qi.item }}">({{ qi.value }}) - {{ qi.item }}</a></li>
+                {% endfor %}
+                <li><input type="text"></li>
+            {% else %}
+                {% for qi in game.queue %}
+                    <li>({{ qi.value }}) - {{ qi.item }} - [+] [-]</li>
+                {% endfor %}
+                <li><input type="text"></li>
+            {% endif %}
         </ul>
     </div>
-    {% endfor %}     
-</div>
--->
-<div class="action">
-    <label for="">Queue</label>
-    <ul>
-        {% for qi in game.queue %}
-            <li>({{ qi.value }}) - {{ qi.item }}</li>
-        {% endfor %}
-        <li><input type="text"></li>
-    </ul>
-</div>
+    <!-- /queue -->
 
-{% get_comment_count for game as comment_game_count %}
-<div class="action">
-    <label for="">Comments ({{ comment_game_count }})</label>
-    {% render_comment_list for game %}
-</div>
-{% if user %}
+{% if game.plotter == user %}
+{% elif game.plotter %}
+    <!-- guess -->
     <div class="action">
-        <label for="">Post Comment</label>
-        {% get_comment_form for game as game_comment_form %}
-         <form action="{% comment_form_target %}" method="post">
-             {% csrf_token %}
-             {{ game_comment_form.as_p }}
-             <p>
-                 <input type="submit" name="submit" value="Post">
-                 <!-- <input type="submit" name="preview" value="Preview"> --> 
-             </p>
-         </form>
+        <label for="">Make a guess</label>
+        <form action="#" method="POST">
+            <ul>
+            <!--
+                <li><input type="text" value="x = "></li>
+                <li><input type="text" value="y = "></li>
+                -->
+            </ul>
+        </form>
     </div>
+    <!-- /guess -->
+
 {% endif %}
+
+    <!-- comment -->
+    {% get_comment_count for game as comment_game_count %}
+    <div class="action">
+        <label for="">Comments ({{ comment_game_count }})</label>
+        {% render_comment_list for game %}
+    </div>
+    {% if user %}
+        <div class="action">
+            <label for="">Post Comment</label>
+            {% get_comment_form for game as game_comment_form %}
+             <form action="{% comment_form_target %}" method="post">
+                 {% csrf_token %}
+                 {{ game_comment_form.as_p }}
+                 <p>
+                     <input type="submit" name="submit" value="Post">
+                     <!-- <input type="submit" name="preview" value="Preview"> --> 
+                 </p>
+             </form>
+        </div>
+    {% endif %}
+    <!-- /comment -->
 {% endblock %}
 

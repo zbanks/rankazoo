@@ -19,7 +19,7 @@ class Group(models.Model):
 
 class Item(models.Model):
     slug = AutoSlugField(unique=True, populate_from="title", max_length=30)
-    title = models.CharField(max_length=50)
+    title = models.CharField(max_length=50, unique=True)
     description = models.TextField(blank=True)
     
     def __unicode__(self):
@@ -41,15 +41,15 @@ class Axis(models.Model):
     AXIS_SCALES_NAMES = zip(AXIS_SCALES.keys(), zip(*AXIS_SCALES.values())[0])
 
     slug = AutoSlugField(unique=True, populate_from="title", max_length=30)
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, unique=True)
     description = models.TextField(blank=True)
     scale = models.CharField(max_length=16, choices=AXIS_SCALES_NAMES, default="LINEAR")
 
     def __unicode__(self):
         return self.title
 
-    def get_absolute_url(self):
-        return reverse("axis", kwargs={"axis_slug": self.slug})
+#def get_absolute_url(self):
+#return reverse("axis", kwargs={"axis_slug": self.slug})
 
     def get_min_value(self):
         return self.AXIS_SCALES[self.scale][1]
@@ -86,6 +86,7 @@ class Ranking(models.Model):
 class Game(models.Model):
     slug = AutoSlugField(unique=True, populate_from="title", max_length=30)
     title = models.CharField(max_length=80, blank=True)
+#creator = models.ForeignKey(User, blank=True, null=True) # FUTURE TODO
     plotter = models.ForeignKey(User, blank=True, null=True)
     followers = models.ManyToManyField(User, related_name="following_games", blank=True, editable=False)
     active = models.BooleanField(default=True)
@@ -98,6 +99,9 @@ class Game(models.Model):
     def touch(self):
         self.last_modified = datetime.datetime.now()
         self.save()
+
+    def get_absolute_url(self):
+        return reverse("game", kwargs={"game_slug": self.slug})
 
     @property
     def claimed(self):
@@ -177,6 +181,7 @@ class Guess(models.Model):
     user = models.ForeignKey(User)
     game = models.ForeignKey(Game)
     time = models.DateTimeField(auto_now_add=True)
+    correct = models.BooleanField(default=False)
 
     def __unicode__(self):
         return u"Guess by %s on [%s]" % (self.user, self.game)
@@ -190,7 +195,7 @@ class AxisInstance(models.Model):
     AXIS_TYPES = {"x": "x",
                   "y": "y" }
     axis = models.ForeignKey(Axis)
-    direction = models.CharField(max_length=3, choices=AXIS_TYPES.items(), blank=True, default=None)
+    direction = models.CharField(max_length=3, choices=AXIS_TYPES.items(), blank=True, default="")
 
     def __unicode__(self):
         return unicode(self.axis)
