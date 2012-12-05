@@ -1,5 +1,5 @@
 @font-face {
-  src: url("images/fontawesome-webfont.ttf");
+  src: url("/static/images/fontawesome-webfont.ttf");
   font-family: "FontAwesome-Glyphs";
 }
 * {

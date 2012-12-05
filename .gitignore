@@ -1,5 +1,5 @@
 *.swp
 *.swo
 *.pyc
-rankazoo_db
+rankazoo_db*
 local_settings.py

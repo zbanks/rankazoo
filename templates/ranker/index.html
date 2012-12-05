@@ -6,47 +6,48 @@
 </script>
 {% endblock %}
 
-{% block container %}
-<div class="axes">
-    <h2>Axes</h2>
+{% block content %}
+{% for game in games %}
+<a href="{% url game game_slug=game.slug %}">
+    <div class="game-active">
+        <h2>{{ game.title }} - {{ game.plotter }}</h2>
+        <ul class="adjs">
+            {% for ax in game.gameaxis_set.all %}
+                <li>{{ ax.axis.title }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</a>
+{% endfor %}
+{% endblock %}
 
+{% block actions %}
+<div class="input g12-12">
+    <label for="">Enter a thing</label>
+    <input type="text">
+</div>
+<div class="input g12-12">
+    <label for="">Enter a few things</label>
     <ul>
-    {% for axis in axes %}
-        <li><a href="{% url axis axis_slug=axis.slug %}">{{ axis.title }}</a></li>
-    {% endfor %}
+        <li>Things</li>
+        <li><input type="text"></li>
+        <li><input type="text"></li>
+        <li><input type="text"></li>
     </ul>
 </div>
-
-<div class="items">
-    <h2>Items</h2>
-
-    <ul>
-    {% for item in items %}
-        <li><a href="{% url item item_slug=item.slug %}">{{ item.title }}</a></li>
-    {% endfor %}
-    </ul>
-</div>
-
-<div class="new_forms">
-    <div class="form" style="float: left;">
-        <h3>Add a new Axis</h3>
-        <form method="POST" action="{% url axis %}">
-            {{ new_axis_form.as_p }}
-            <p>
-                <input type="submit" value="Save"></input>
-            </p>
-        </form>
+<!--
+<div class="input g12-12">
+    <h3>Suggested games</h3>
+    {% for game in inactive_games %}
+    <div class="game-inactive">
+        <h2>{{ game.title }}</h2>
+        <ul class="adjs">
+            {% for ax in game.gameaxis_set.all %}
+                <li>{{ ax.axis.title }}</li>
+            {% endfor %}
+        </ul>
     </div>
-
-    <div class="form" style="float: right;">
-        <h3>Add a new Item</h3>
-        <form method="POST" action="{% url item %}">
-            {{ new_item_form.as_p }}
-            <p>
-                <input type="submit" value="Save"></input>
-            </p>
-        </form>
-    </div>
+    {% endfor %}     
 </div>
-
+-->
 {% endblock %}

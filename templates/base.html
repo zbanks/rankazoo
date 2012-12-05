@@ -1,57 +1,86 @@
-<!doctype html>
 <html>
-<head>
-    <title>Rankazoo</title>
-    <!-- <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css"></link> -->
-    <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/>
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
-    <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+    <head>
+        <title>The Axis Game</title>
+        <link rel="stylesheet" type="text/css" href="/static/css/styles.css">
+        <link rel="stylesheet" href="/static/css/font-awesome.css">
+        <link rel="stylesheet" href="/static/css/font-awesome-ie7.css">
+        <!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> --> 
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+        <style type="text/css">
+            .slider {
+                width: 400px;
+                float: right;
+            } 
+        </style>
+        <script type="text/javascript">
+            $(document).ready(function(){
+                $(".slider").each(function(){
+                    var $this = $(this);
+                    $this.slider({ 
+                        orientation: "horizontal",
+                        min: parseFloat($this.attr("minvalue")),
+                        max: parseFloat($this.attr("maxvalue")),
+                        step: 1,
+                        value: parseFloat($this.attr("rankvalue")),
+                        create: function(){
+                            var $this = $(this)
+                            var val = parseFloat($this.attr("rankvalue"));
+                            $this.slider("value", val);
+                        },
+                        slide: function(){
+                            var $this = $(this);
+                            $this.siblings("span.rankvalue").text($this.slider("value"));
 
-    <style type="text/css">
-        .slider {
-            width: 400px;
-            float: right;
-        } 
-    </style>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $(".slider").each(function(){
-                var $this = $(this);
-                $this.slider({ 
-                    orientation: "horizontal",
-                    min: parseFloat($this.attr("minvalue")),
-                    max: parseFloat($this.attr("maxvalue")),
-                    step: 1,
-                    value: parseFloat($this.attr("rankvalue")),
-                    create: function(){
-                        var $this = $(this)
-                        var val = parseFloat($this.attr("rankvalue"));
-                        $this.slider("value", val);
-                    },
-                    slide: function(){
-                        var $this = $(this);
-                        $this.siblings("span.rankvalue").text($this.slider("value"));
-
-                    },
-                    change: function(){
-                        var $this = $(this);
-                        var val = $this.slider("value");
-                        var url = $this.attr("saveurl");
-                        $.post(url, {"value" : val}); 
-                    }
+                        },
+                        change: function(){
+                            var $this = $(this);
+                            var val = $this.slider("value");
+                            var url = $this.attr("saveurl");
+                            $.post(url, {"value" : val}); 
+                        }
+                    });
                 });
             });
-        });
-    </script>
-    {% block includes %}
-    {% endblock %}
-</head>
-
-<body>
-    <div class="container">
-        <h1><a href="{% url index %}">Ranker</a></h1>
-        {% block container %}
+        </script>
+        {% block includes %}
         {% endblock %}
-    </div>
-</body>
-
+    </head>
+    <body class="grid g12-12">
+        <div class="menubar col g1">
+            <div class="container">
+                <a href="#list" class="menu-btn list">
+                    <i class="icon-reorder"></i>
+                </a>
+                <a href="#account" class="menu-btn account">
+                    <i class="icon-user"></i>
+                </a>
+                <a href="#settings" class="menu-btn setting">
+                    <i class="icon-cog"></i>
+                </a>
+            </div>
+        </div>
+        <div class="content grid">
+            <div class="col g6-12">
+                <div class="title">
+                    <h1 class="title-txt">{% block content_title %}The Axis Game{% endblock %}</h1>
+                </div>
+                <div class="container">
+                    {% block content %}
+                    {% endblock %}
+                </div>
+            </div>
+            <div class="col g3-12">
+                <div class="title">
+                    <span class="title-txt">
+                        <h3>{% block action_title %}Things{% endblock %}</h3>
+                    </span>
+                </div>
+                <div class="container">
+                    {% block actions %}
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

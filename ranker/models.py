@@ -52,10 +52,10 @@ class Axis(models.Model):
         return reverse("axis", kwargs={"axis_slug": self.slug})
 
     def get_min_value(self):
-        return AXIS_SCALES[self.scale][1]
+        return self.AXIS_SCALES[self.scale][1]
 
     def get_max_value(self):
-        return AXIS_SCALES[self.scale][2]
+        return self.AXIS_SCALES[self.scale][2]
 
     def renorm_ranks(self):
         minv = self.get_min_value()
@@ -71,6 +71,7 @@ class Axis(models.Model):
 class Ranking(models.Model):
     item = models.ForeignKey(Item)
     axis = models.ForeignKey(Axis)
+    game = models.ForeignKey("Game")
     value = models.DecimalField(max_digits=6, decimal_places=4, default=0.0)
     user = models.ForeignKey(User, blank=True, null=True)
     description = models.TextField(blank=True)
@@ -101,6 +102,44 @@ class Game(models.Model):
     @property
     def claimed(self):
         return self.plotter is not None
+
+    @property
+    def x_axis(self):
+        try: 
+            return self.gameaxis_set.get(direction="x").axis
+        except:
+            return None
+
+    @property
+    def y_axis(self):
+        try: 
+            return self.gameaxis_set.get(direction="y").axis
+        except:
+            return None
+
+    @property
+    def plotted_items(self):
+        # plotted_items ::= [(item, rankx, ranky)]
+        plotted_items_pk = {}
+        for ranking in self.ranking_set.all():
+            if ranking.item.pk in plotted_items_pk:
+                rx, ry = plotted_items_pk[ranking.item.pk]
+            else:
+                rx, ry = None, None
+            if ranking.axis.pk == self.x_axis.pk:
+                rx = ranking
+            elif ranking.axis.pk == self.y_axis.pk:
+                ry = ranking
+            else:
+                pass # Neither x nor y?
+            plotted_items_pk[ranking.item.pk] = (rx, ry)
+        plotted_items = []
+        for item_pk, (rankx, ranky) in plotted_items_pk.items():
+            if rankx is not None and ranky is not None:
+                try:
+                    plotted_items.append((Item.objects.get(pk=item_pk), rankx, ranky))
+                except: pass
+        return plotted_items
 
     class Meta:
         ordering = ["-last_modified"]

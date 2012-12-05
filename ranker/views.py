@@ -1,5 +1,5 @@
 from django import forms
-from django.shortcuts import render_to_response, redirect
+from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.views.defaults import page_not_found, server_error
 from django.http import HttpResponse
 from django.db.models import Count
@@ -17,10 +17,25 @@ class RankingForm(forms.Form):
     pass    
 
 def index(request):
+    user = request.user
     games = Game.objects.filter(plotter__isnull=False)[:5]
     inactive_games = Game.objects.filter(plotter__isnull=True)
-    return render_to_response("base_new.html", 
-                             {"games": games
+    return render_to_response("ranker/index.html", 
+                             {"games": games,
+                              "inactive_games": inactive_games,
+                              "user": user
+                             })
+
+def game(request, game_slug=""):
+    user = request.user
+    game = get_object_or_404(Game, slug=game_slug)
+    x_axis, y_axis = game.x_axis, game.y_axis
+
+    return render_to_response("ranker/game.html",
+                             {"game": game,
+                              "user": user,
+                              "x_axis": x_axis,
+                              "y_axis": y_axis
                              })
 '''
 def index(request):
