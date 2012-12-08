@@ -19,4 +19,4 @@ urlpatterns = patterns('',
     url(r'^comments/', include('django.contrib.comments.urls')),
 
 )
-urlpatterns += staticfiles_urlpatterns()
+#urlpatterns += staticfiles_urlpatterns()
